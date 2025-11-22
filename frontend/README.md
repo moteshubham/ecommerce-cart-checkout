@@ -1,16 +1,71 @@
-# React + Vite
+# Frontend - Ecommerce Cart & Checkout UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React frontend application built with Vite for the ecommerce cart and checkout system.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+The application runs on `http://localhost:5173` by default.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- **Modern UI**: Professional design with clean color scheme
+- **Responsive Design**: Works on desktop and mobile devices
+- **Shopping Cart**: Add, view, and remove items
+- **Checkout**: Process orders with optional coupon codes
+- **Admin Dashboard**: View coupons and analytics
+- **Demo Items**: Pre-configured items for quick testing
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Pages
+
+- **Home** (`/`): Browse and add items to cart
+- **Cart** (`/cart`): View and manage shopping cart
+- **Checkout** (`/checkout`): Complete purchase with optional coupon
+- **Admin** (`/admin`): View coupons and analytics reports
+
+## API Configuration
+
+The frontend connects to the backend API. Update the API base URL in `src/services/api.js` if needed:
+
+```javascript
+const API_BASE_URL = 'http://localhost:3001';
+```
+
+## Development
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+```
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── pages/          # Page components (Home, Cart, Checkout, Admin)
+│   ├── services/       # API client functions
+│   ├── App.jsx         # Main app component
+│   └── main.jsx        # Application entry point
+└── package.json
+```
+
+## UI Theme
+
+The application uses a professional color scheme:
+- **Primary Color**: Blue (#2563eb)
+- **Background**: Light gray (#f8fafc)
+- **Text**: Dark gray (#1e293b)
+- **Success**: Green (#10b981)
+- **Error**: Red (#ef4444)
+
+## Dependencies
+
+- React 19+
+- React Router DOM - Navigation
+- Vite - Build tool

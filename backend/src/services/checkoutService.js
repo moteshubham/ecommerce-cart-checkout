@@ -1,5 +1,6 @@
 import { getUserCart } from './cartService.js';
 import { addOrder, getLatestValidCoupon, isCouponUsed, markCouponUsed, setCart } from '../models/store.js';
+import { generateCouponIfEligible } from './couponService.js';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -74,6 +75,10 @@ export const processCheckout = (userId, couponCode = null) => {
   };
 
   addOrder(order);
+
+  // Auto-generate coupon if nth order condition is met
+  // This happens automatically after order is created
+  generateCouponIfEligible();
 
   // Clear user's cart after successful checkout
   setCart(userId, []);

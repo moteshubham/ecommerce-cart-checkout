@@ -35,46 +35,47 @@ function Cart() {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className="page-container">
       <h1>Shopping Cart</h1>
-      {message && <div style={{ padding: '1rem', background: '#d4edda', marginBottom: '1rem' }}>{message}</div>}
+      {message && <div className={message.includes('Error') ? 'error-message' : 'success-message'}>{message}</div>}
       
-      <div style={{ marginBottom: '1rem' }}>
-        <label>User ID: </label>
-        <input
-          type="text"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          style={{ padding: '0.5rem', marginRight: '1rem' }}
-        />
-        <button onClick={loadCart} style={{ padding: '0.5rem 1rem' }}>Refresh</button>
+      <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+        <div className="form-group" style={{ marginBottom: 0, flex: '1' }}>
+          <label>User ID:</label>
+          <input
+            type="text"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+          />
+        </div>
+        <button onClick={loadCart} className="btn-secondary">Refresh</button>
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>Loading...</p>
       ) : cart ? (
         <div>
           {cart.items && cart.items.length > 0 ? (
             <>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '1rem' }}>
+              <table>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #ccc' }}>
-                    <th style={{ textAlign: 'left', padding: '0.5rem' }}>Item</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem' }}>Price</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem' }}>Quantity</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem' }}>Subtotal</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem' }}>Action</th>
+                  <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {cart.items.map(item => (
-                    <tr key={item.itemId} style={{ borderBottom: '1px solid #eee' }}>
-                      <td style={{ padding: '0.5rem' }}>{item.name}</td>
-                      <td style={{ padding: '0.5rem' }}>${item.price.toFixed(2)}</td>
-                      <td style={{ padding: '0.5rem' }}>{item.qty}</td>
-                      <td style={{ padding: '0.5rem' }}>${(item.price * item.qty).toFixed(2)}</td>
-                      <td style={{ padding: '0.5rem' }}>
-                        <button onClick={() => handleRemove(item.itemId)} style={{ padding: '0.25rem 0.5rem' }}>
+                    <tr key={item.itemId}>
+                      <td><strong>{item.name}</strong></td>
+                      <td>${item.price.toFixed(2)}</td>
+                      <td>{item.qty}</td>
+                      <td><strong>${(item.price * item.qty).toFixed(2)}</strong></td>
+                      <td>
+                        <button onClick={() => handleRemove(item.itemId)} className="btn-secondary" style={{ padding: '0.375rem 0.75rem', fontSize: '0.875rem' }}>
                           Remove
                         </button>
                       </td>
@@ -82,16 +83,22 @@ function Cart() {
                   ))}
                 </tbody>
               </table>
-              <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
-                Total: ${cart.total.toFixed(2)}
+              <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--bg-tertiary)', borderRadius: '8px', textAlign: 'right' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--primary-color)' }}>
+                  Total: ${cart.total.toFixed(2)}
+                </div>
               </div>
             </>
           ) : (
-            <p>Your cart is empty</p>
+            <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
+              <p style={{ fontSize: '1.125rem', color: 'var(--text-secondary)' }}>Your cart is empty</p>
+            </div>
           )}
         </div>
       ) : (
-        <p>No cart data</p>
+        <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
+          <p style={{ fontSize: '1.125rem', color: 'var(--text-secondary)' }}>No cart data</p>
+        </div>
       )}
     </div>
   );

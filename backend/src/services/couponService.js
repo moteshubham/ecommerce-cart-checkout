@@ -1,8 +1,8 @@
 import { getOrderCount, addCoupon, getLatestValidCoupon, isCouponUsed } from '../models/store.js';
 import { v4 as uuidv4 } from 'uuid';
 
-// Configuration: Generate coupon every Nth order (default: 5)
-const NTH_ORDER = parseInt(process.env.NTH_ORDER) || 5;
+// Configuration: Generate coupon every Nth order (default: 2)
+const NTH_ORDER = parseInt(process.env.NTH_ORDER) || 2;
 
 /**
  * Generate a random coupon code

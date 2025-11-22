@@ -107,7 +107,7 @@ POST http://localhost:3001/checkout
 }
 ```
 
-### Step 4: Generate Coupon (after 5 orders)
+### Step 4: Generate Coupon (after 2 orders)
 ```bash
 POST http://localhost:3001/admin/generate-coupon
 ```

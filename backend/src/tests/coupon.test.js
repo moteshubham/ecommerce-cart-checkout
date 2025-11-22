@@ -16,16 +16,16 @@ describe('Coupon Service', () => {
       expect(couponService.shouldGenerateCoupon()).toBe(false);
     });
 
-    it('should return true for 5th order (default NTH_ORDER=5)', () => {
-      // Create 5 orders
-      for (let i = 0; i < 5; i++) {
+    it('should return true for 2nd order (default NTH_ORDER=2)', () => {
+      // Create 2 orders
+      for (let i = 0; i < 2; i++) {
         addOrder({ orderId: `order${i}`, userId: 'user1', items: [], total: 100, discount: 0, finalAmount: 100, timestamp: new Date().toISOString() });
       }
       expect(couponService.shouldGenerateCoupon()).toBe(true);
     });
 
-    it('should return false for 4th order', () => {
-      for (let i = 0; i < 4; i++) {
+    it('should return false for 1st order', () => {
+      for (let i = 0; i < 1; i++) {
         addOrder({ orderId: `order${i}`, userId: 'user1', items: [], total: 100, discount: 0, finalAmount: 100, timestamp: new Date().toISOString() });
       }
       expect(couponService.shouldGenerateCoupon()).toBe(false);
@@ -34,8 +34,8 @@ describe('Coupon Service', () => {
 
   describe('generateCouponIfEligible', () => {
     it('should generate coupon when condition is met and no coupon exists', () => {
-      // Create 5 orders
-      for (let i = 0; i < 5; i++) {
+      // Create 2 orders
+      for (let i = 0; i < 2; i++) {
         addOrder({ orderId: `order${i}`, userId: 'user1', items: [], total: 100, discount: 0, finalAmount: 100, timestamp: new Date().toISOString() });
       }
       
@@ -54,8 +54,8 @@ describe('Coupon Service', () => {
     });
 
     it('should return null if no coupon exists and condition not met', () => {
-      // Create only 3 orders (not 5)
-      for (let i = 0; i < 3; i++) {
+      // Create only 1 order (not 2)
+      for (let i = 0; i < 1; i++) {
         addOrder({ orderId: `order${i}`, userId: 'user1', items: [], total: 100, discount: 0, finalAmount: 100, timestamp: new Date().toISOString() });
       }
       
@@ -64,8 +64,8 @@ describe('Coupon Service', () => {
     });
 
     it('should generate new coupon when previous one is used', () => {
-      // Create 5 orders
-      for (let i = 0; i < 5; i++) {
+      // Create 2 orders
+      for (let i = 0; i < 2; i++) {
         addOrder({ orderId: `order${i}`, userId: 'user1', items: [], total: 100, discount: 0, finalAmount: 100, timestamp: new Date().toISOString() });
       }
       
@@ -76,8 +76,8 @@ describe('Coupon Service', () => {
       // Mark it as used
       markCouponUsed(firstResult.coupon);
       
-      // Create 5 more orders (total 10)
-      for (let i = 5; i < 10; i++) {
+      // Create 2 more orders (total 4)
+      for (let i = 2; i < 4; i++) {
         addOrder({ orderId: `order${i}`, userId: 'user1', items: [], total: 100, discount: 0, finalAmount: 100, timestamp: new Date().toISOString() });
       }
       

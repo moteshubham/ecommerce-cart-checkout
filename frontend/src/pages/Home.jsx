@@ -16,7 +16,22 @@ function Home() {
   return (
     <div style={{ padding: '2rem' }}>
       <h1>Ecommerce Store</h1>
-      <h2>Add Item to Cart</h2>
+      {message && <div style={{ padding: '1rem', background: '#d4edda', marginBottom: '1rem' }}>{message}</div>}
+      
+      <h2>Demo Items</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+        {demoItems.map(item => (
+          <div key={item.itemId} style={{ border: '1px solid #ccc', padding: '1rem' }}>
+            <h3>{item.name}</h3>
+            <p>${item.price.toFixed(2)}</p>
+            <button onClick={() => handleAddDemoItem(item)} style={{ padding: '0.5rem 1rem' }}>
+              Add to Cart
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <h2>Add Custom Item to Cart</h2>
       <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
         <div style={{ marginBottom: '1rem' }}>
           <label>User ID:</label>

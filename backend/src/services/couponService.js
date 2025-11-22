@@ -1,6 +1,7 @@
 import { getOrderCount, addCoupon, getLatestValidCoupon, isCouponUsed } from '../models/store.js';
 import { v4 as uuidv4 } from 'uuid';
 
+// Configuration: Generate coupon every Nth order (default: 5)
 const NTH_ORDER = parseInt(process.env.NTH_ORDER) || 5;
 
 /**
@@ -23,15 +24,18 @@ export const shouldGenerateCoupon = () => {
 
 /**
  * Generate a new coupon if condition is met, or return latest valid coupon
- * @returns {Object} { coupon: string, generated: boolean }
+ * Coupons are generated every Nth order. Only one valid coupon exists at a time.
+ * @returns {Object} { coupon: string|null, generated: boolean }
  */
 export const generateCouponIfEligible = () => {
   const latestCoupon = getLatestValidCoupon();
   const isLatestUsed = latestCoupon ? isCouponUsed(latestCoupon.code) : true;
   
-  // If we should generate a new coupon
+  // Check if we've reached the Nth order threshold
   if (shouldGenerateCoupon()) {
-    // Generate if no coupon exists or latest coupon has been used
+    // Generate new coupon if:
+    // 1. No coupon exists, OR
+    // 2. Latest coupon has been used
     if (!latestCoupon || isLatestUsed) {
       const code = generateCouponCode();
       addCoupon(code);
@@ -39,12 +43,12 @@ export const generateCouponIfEligible = () => {
     }
   }
 
-  // Return latest valid coupon if it exists and hasn't been used
+  // Return existing valid coupon if it exists and hasn't been used
   if (latestCoupon && !isLatestUsed) {
     return { coupon: latestCoupon.code, generated: false };
   }
 
-  // No coupon available
+  // No coupon available (condition not met or all coupons used)
   return { coupon: null, generated: false };
 };
 

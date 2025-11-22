@@ -1,3 +1,7 @@
+/**
+ * Main server entry point
+ * Sets up Express server with all routes and middleware
+ */
 import express from 'express';
 import cors from 'cors';
 import healthRouter from './routes/health.js';
@@ -8,15 +12,17 @@ import adminRouter from './routes/admin.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(express.json());
+// Middleware
+app.use(cors()); // Enable CORS for frontend
+app.use(express.json()); // Parse JSON request bodies
 
-// Routes
-app.use('/health', healthRouter);
-app.use('/cart', cartRouter);
-app.use('/checkout', checkoutRouter);
-app.use('/admin', adminRouter);
+// API Routes
+app.use('/health', healthRouter); // Health check endpoint
+app.use('/cart', cartRouter); // Cart management endpoints
+app.use('/checkout', checkoutRouter); // Checkout endpoint
+app.use('/admin', adminRouter); // Admin endpoints (coupon generation, reports)
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Validate and apply coupon code
+ * Validates that the coupon exists, is the latest valid coupon, and hasn't been used
  * @param {string} couponCode - Coupon code to validate
- * @returns {Object} { valid: boolean, discount: number }
+ * @returns {Object} { valid: boolean, discount: number } - discount is 0.1 for 10% off
  */
 export const validateCoupon = (couponCode) => {
   if (!couponCode) {
@@ -14,26 +15,32 @@ export const validateCoupon = (couponCode) => {
 
   const latestCoupon = getLatestValidCoupon();
   
+  // Check if coupon exists and matches the latest valid coupon
   if (!latestCoupon || latestCoupon.code !== couponCode) {
     return { valid: false, discount: 0 };
   }
 
+  // Check if coupon has already been used
   if (isCouponUsed(couponCode)) {
     return { valid: false, discount: 0 };
   }
 
-  return { valid: true, discount: 0.1 }; // 10% discount
+  // Valid coupon - return 10% discount
+  return { valid: true, discount: 0.1 };
 };
 
 /**
  * Process checkout for a user
+ * Validates cart, applies coupon if provided, creates order, and clears cart
  * @param {string} userId - User ID
- * @param {string} couponCode - Optional coupon code
- * @returns {Object} Order details
+ * @param {string} couponCode - Optional coupon code for discount
+ * @returns {Object} Order details with orderId, items, totals, and timestamp
+ * @throws {Error} If cart is empty or coupon is invalid
  */
 export const processCheckout = (userId, couponCode = null) => {
   const cart = getUserCart(userId);
 
+  // Validate cart has items
   if (!cart.items || cart.items.length === 0) {
     throw new Error('Cart is empty');
   }
@@ -48,16 +55,18 @@ export const processCheckout = (userId, couponCode = null) => {
     if (!couponValidation.valid) {
       throw new Error('Invalid or already used coupon code');
     }
+    // Calculate discount (10% of total)
     discount = total * couponValidation.discount;
     finalAmount = total - discount;
+    // Mark coupon as used (single-use only)
     markCouponUsed(couponCode);
   }
 
-  // Create order
+  // Create order record
   const order = {
     orderId: uuidv4(),
     userId,
-    items: [...cart.items],
+    items: [...cart.items], // Copy items array
     total,
     discount,
     finalAmount,
@@ -66,7 +75,7 @@ export const processCheckout = (userId, couponCode = null) => {
 
   addOrder(order);
 
-  // Clear cart
+  // Clear user's cart after successful checkout
   setCart(userId, []);
 
   return order;

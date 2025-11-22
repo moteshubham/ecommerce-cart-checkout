@@ -1,3 +1,4 @@
+// API base URL - change this if backend runs on different host/port
 const API_BASE_URL = 'http://localhost:3001';
 
 export const addToCart = async (userId, itemId, name, price, qty) => {

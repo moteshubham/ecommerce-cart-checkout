@@ -1,4 +1,5 @@
 import * as cartService from '../services/cartService.js';
+import { isValidUserId, isValidItemId, isValidPrice, isValidQuantity } from '../utils/validate.js';
 
 export const addItem = (req, res) => {
   try {
@@ -29,6 +30,11 @@ export const addItem = (req, res) => {
 export const getCart = (req, res) => {
   try {
     const { userId } = req.params;
+    
+    if (!isValidUserId(userId)) {
+      return res.status(400).json({ error: 'Invalid userId' });
+    }
+
     const result = cartService.getUserCart(userId);
     res.status(200).json(result);
   } catch (error) {
@@ -39,6 +45,15 @@ export const getCart = (req, res) => {
 export const removeItem = (req, res) => {
   try {
     const { userId, itemId } = req.params;
+    
+    if (!isValidUserId(userId)) {
+      return res.status(400).json({ error: 'Invalid userId' });
+    }
+
+    if (!isValidItemId(itemId)) {
+      return res.status(400).json({ error: 'Invalid itemId' });
+    }
+
     const cart = cartService.removeItemFromCart(userId, itemId);
     const result = cartService.getUserCart(userId);
     res.status(200).json(result);
